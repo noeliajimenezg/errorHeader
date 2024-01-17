@@ -1,22 +1,22 @@
-## Micronaut 4.3.0-SNAPSHOT Documentation
+## Micronaut 4.2.0
 
-- [User Guide](https://docs.micronaut.io/snapshot/guide/index.html)
-- [API Reference](https://docs.micronaut.io/snapshot/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/snapshot/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
----
+Project to show the error due to large header/message on grpc
 
-- [Protobuf Gradle Plugin](https://plugins.gradle.org/plugin/com.google.protobuf)
-- [Shadow Gradle Plugin](https://plugins.gradle.org/plugin/com.github.johnrengelman.shadow)
-- [Micronaut Gradle Plugin documentation](https://micronaut-projects.github.io/micronaut-gradle-plugin/latest/)
-- [GraalVM Gradle Plugin documentation](https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html)
-## Feature serialization-jackson documentation
+Current behavior
 
-- [Micronaut Serialization Jackson Core documentation](https://micronaut-projects.github.io/micronaut-serialization/latest/guide/)
+grpcurl -import-path ~/Downloads/errorHeader-master/src/main/proto -proto ~/Downloads/errorHeader-master/src/main/proto/ErrorHeader.proto -vv -plaintext -d '{"name":"toto"}' localhost:50054 com.example.ErrorHeaderService/sendWithError
+
+See file [grpcurl_resultSendWithError.json](grpcurl_resultSendWithError.json)
+
+-max-msg-sz 999999999 does not change the result
+
+grpcurl -import-path ~/Downloads/errorHeader-master/src/main/proto -proto ~/Downloads/errorHeader-master/src/main/proto/ErrorHeader.proto -vv -plaintext -d '{"name":"toto"}' localhost:50054 com.example.ErrorHeaderService/sendOk
+
+See file [grpcurl_resultSendOk.json](grpcurl_resultSendOk.json)
 
 
-## Feature discovery-core documentation
+On Kreya client, the error message is:
 
-- [Micronaut Discovery Core documentation](https://micronaut-projects.github.io/micronaut-discovery-client/latest/guide/)
+Error starting gRPC call. HttpRequestException: An error occurred while sending the request. IOException: The request was aborted. HPackDecodingException: The HTTP headers length exceeded the set limit of 65536 bytes.
 
 
