@@ -1,0 +1,15 @@
+#Wed Jan 17 20:36:55 UTC 2024
+#Wed Jan 17 20:36:55 UTC 2024
+micronaut:
+  application:
+    name: errorHeader
+grpc:
+  server:
+    port: 50054
+#    max-inbound-metadata-size: 999999999 # default 8kb 8192
+    max-inbound-message-size: 999999999 # default 4194304
+    # bytes length of message ERROR 51725
+    # bytes length of message OK    44125
+logger:
+  levels:
+    io.grpc.netty.NettyServerHandler: DEBUG
