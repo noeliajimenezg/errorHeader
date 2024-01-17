@@ -12,7 +12,6 @@ import jakarta.inject.Singleton;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Base64;
-import java.util.Optional;
 
 import static com.example.ExceptionData.MESSAGE;
 
