@@ -8,7 +8,8 @@ option objc_class_prefix = "HLW";
 package com.example;
 
 service ErrorHeaderService {
-  rpc send (ErrorHeaderRequest) returns (ErrorHeaderReply) {}
+  rpc sendWithError (ErrorHeaderRequest) returns (ErrorHeaderReply) {}
+  rpc sendOk (ErrorHeaderRequest) returns (ErrorHeaderReply) {}
 }
 
 message ErrorHeaderRequest {
@@ -17,4 +18,11 @@ message ErrorHeaderRequest {
 
 message ErrorHeaderReply {
   string message = 1;
+}
+
+message GenericException {
+  string dataField = 1;
+  string cause = 2;
+  string message = 3;
+  string serializedException = 4;
 }
