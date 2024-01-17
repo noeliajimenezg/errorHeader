@@ -1,0 +1,16 @@
+
+Resolved method descriptor:
+rpc sendWithError ( .com.example.ErrorHeaderRequest ) returns ( .com.example.ErrorHeaderReply );
+
+Request metadata to send:
+(empty)
+
+Response headers received:
+(empty)
+
+Response trailers received:
+(empty)
+Sent 1 request and received 0 responses
+ERROR:
+  Code: Unavailable
+  Message: error reading from server: http2: frame too large
