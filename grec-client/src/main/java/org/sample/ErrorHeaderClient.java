@@ -4,9 +4,8 @@ import com.example.ErrorHeaderReply;
 import com.example.ErrorHeaderRequest;
 import com.example.ErrorHeaderServiceGrpc;
 import com.google.protobuf.Any;
-import io.grpc.Grpc;
-import io.grpc.InsecureChannelCredentials;
-import io.grpc.ManagedChannel;
+import io.grpc.*;
+import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 
 public class ErrorHeaderClient {
@@ -15,10 +14,23 @@ public class ErrorHeaderClient {
 
         // Channel is used by the client to communicate with the server using the domain localhost and port 5003.
         // This is the port where our server is starting.
-        ManagedChannel channel =  Grpc.newChannelBuilder("localhost:50054", InsecureChannelCredentials.create())
-                        .maxInboundMetadataSize(99999999)
-        //                .maxInboundMessageSize(21552922)
-                        .build();
+
+        /**
+           plaintext config
+           399990 make works both metadata, 339990 make only work the sendOk
+         */
+//        ManagedChannel channel =  Grpc.newChannelBuilder("localhost:50054",  getChannelCredentialsInsecure())
+//                        .maxInboundMetadataSize(339990)
+////                        .maxInboundMessageSize(9999999)
+//                        .build();
+
+        /**
+         ssl config
+         */
+        ManagedChannel channel =  Grpc.newChannelBuilder("localhost:50054",  getChannelCredentialsTlsInsecure())
+                .maxInboundMetadataSize(999990)
+                .maxInboundMessageSize(20194304)
+                .build();
 
         // Auto generated stub class with the constructor wrapping the channel.
         ErrorHeaderServiceGrpc.ErrorHeaderServiceBlockingStub stub = ErrorHeaderServiceGrpc.newBlockingStub(channel);
@@ -47,5 +59,14 @@ public class ErrorHeaderClient {
         }catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    private static ChannelCredentials getChannelCredentialsInsecure(){
+        return InsecureChannelCredentials.create();
+    }
+    private static ChannelCredentials getChannelCredentialsTlsInsecure(){
+        return TlsChannelCredentials.newBuilder()
+                .trustManager(InsecureTrustManagerFactory.INSTANCE.getTrustManagers())
+                .build();
     }
 }
