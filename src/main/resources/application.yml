@@ -1,13 +1,20 @@
 #Wed Jan 17 20:36:55 UTC 2024
-#Wed Jan 17 20:36:55 UTC 2024
 micronaut:
   application:
     name: errorHeader
 grpc:
   server:
     port: 50054
-#    max-inbound-metadata-size: 999999999 # default 8kb 8192
-    max-inbound-message-size: 999999999 # default 4194304
+    # config working for plaintext (almost 1MB of metadata should be valid)
+#    max-inbound-metadata-size: 399990 # default 8kb 8192. 399990 make works both metadata, 339990 make only work the sendOk
+#    max-inbound-message-size: NO REQUIRED TO USE WITH CURRENT CASE # default 4194304
+    # config working with SSL
+#    max-inbound-metadata-size: 9999990 # default 8kb 8192  12036062
+#    max-inbound-message-size: 20194304 # default 4194304
+    ssl:
+      cert-chain: 'classpath:server-cert.pem'
+      private-key: 'classpath:server-key.pem'
+
     # bytes length of message ERROR 51725
     # bytes length of message OK    44125
 logger:
