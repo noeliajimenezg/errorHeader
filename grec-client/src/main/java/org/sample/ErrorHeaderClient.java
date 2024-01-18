@@ -3,9 +3,16 @@ package org.sample;
 import com.example.ErrorHeaderReply;
 import com.example.ErrorHeaderRequest;
 import com.example.ErrorHeaderServiceGrpc;
-import com.google.protobuf.Any;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 import io.grpc.*;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
+
+import java.io.*;
+import java.util.Map;
+import java.util.Objects;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 
 public class ErrorHeaderClient {
@@ -68,5 +75,30 @@ public class ErrorHeaderClient {
         return TlsChannelCredentials.newBuilder()
                 .trustManager(InsecureTrustManagerFactory.INSTANCE.getTrustManagers())
                 .build();
+    }
+
+    public static ChannelCredentials getChannelCredentialsTls() {
+        try {
+
+            return TlsChannelCredentials.newBuilder().trustManager(getTrustedRootCertificate()).build();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static InputStream getTrustedRootCertificate() throws FileNotFoundException {
+        return getResourceAsStream("ca-cert.pem");
+    }
+    public static Map<String, ?> getServiceConfig(String filename) {
+        return new Gson()
+                .fromJson(
+                        new JsonReader(
+                                new InputStreamReader(
+                                        Objects.requireNonNull(getResourceAsStream(filename)), UTF_8)),
+                        Map.class);
+    }
+
+    public static InputStream getResourceAsStream(String filename) {
+        return ErrorHeaderClient.class.getClassLoader().getResourceAsStream(filename);
     }
 }
